@@ -1,0 +1,38 @@
+tech:
+  runner:
+    message:
+      queue:
+        size: 100
+      poll:
+        timeout: 5000
+
+vertx:
+  http:
+    port: 8080
+  handler:
+    routes:
+      - name: default
+        route: true
+        type: GET
+        consumes: application/json
+        produces: application/json
+        handlers: ["{}",render]
+        errors: error
+      - path: /hello
+        inherit: default
+#        produces: text/plain
+        handlers: helloWorld
+      - path: /hellotask
+        inherit: default
+#        produces: text/plain
+        handlers: helloWorld#helloTask
+    messages:
+      - path: /message
+        handlers: helloWorld#helloTask
+    exception: ServerExceptionHandler
+
+ignite:
+  logger:
+    type: slf4j
+  discovery:
+    type: ip
